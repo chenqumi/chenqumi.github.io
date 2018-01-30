@@ -9,11 +9,66 @@
 <p>引自Durand<sup>[1]</sup> </p>
 <h4 id="显著性检验："><a href="#显著性检验：" class="headerlink" title="显著性检验："></a>显著性检验：</h4><p>使用jackknife方法，所有文献都用的这个方法</p>
 <h3 id="程序实现"><a href="#程序实现" class="headerlink" title="程序实现"></a>程序实现</h3><ol>
-<li><p>针对每一位点，计算群体中alt的频率</p>
-<p>| CHROM | POS  |  A1  |  A2  |  A3  |  B1  |  B2  |  B3  |  O   |<br>|:—:|:—:|:—:|:—:|:—:|:—:|:—:|:—:|:—:|<br>| chr1  | 100  | 0/0  | 0/0  | 0/1  | 1/1  | 0/1  | 0/1  | 0/1  |<br>| chr1  | 218  | 1/1  | 0/1  | 0/1  | 0/0  | ./.  | 0/1  | 1/1  |</p>
-<p>对于第一个位点，$\hat{p}_{iA}$ = $\frac{N_{alt}}{N_{total}}$ = 1/6 ;            $\hat{p}_{iB}$ = 4/6 ;             $\hat{p}_{iO}$ = 1/2</p>
-<p>对于第二个位点，$\hat{p}_{iA}$ = 4/6;                          $\hat{p}_{iB}$ = 1/4;              $\hat{p}_{iO}$ = 1</p>
-</li>
+<li>针对每一位点，计算群体中alt的频率</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">chr</th>
+<th style="text-align:center">pos</th>
+<th style="text-align:center">A1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">chr1</td>
+<td style="text-align:center">100</td>
+<td style="text-align:center">0/0</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">CHROM</th>
+<th style="text-align:center">POS</th>
+<th style="text-align:center">A1</th>
+<th style="text-align:center">A2</th>
+<th style="text-align:center">A3</th>
+<th style="text-align:center">B1</th>
+<th style="text-align:center">B2</th>
+<th style="text-align:center">B3</th>
+<th style="text-align:center">O</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">chr1</td>
+<td style="text-align:center">100</td>
+<td style="text-align:center">0/0</td>
+<td style="text-align:center">0/0</td>
+<td style="text-align:center">0/1</td>
+<td style="text-align:center">1/1</td>
+<td style="text-align:center">0/1</td>
+<td style="text-align:center">0/1</td>
+<td style="text-align:center">0/1</td>
+</tr>
+<tr>
+<td style="text-align:center">chr1</td>
+<td style="text-align:center">218</td>
+<td style="text-align:center">1/1</td>
+<td style="text-align:center">0/1</td>
+<td style="text-align:center">0/1</td>
+<td style="text-align:center">0/0</td>
+<td style="text-align:center">./.</td>
+<td style="text-align:center">0/1</td>
+<td style="text-align:center">1/1</td>
+</tr>
+</tbody>
+</table>
+<p>   对于第一个位点，$\hat{p}_{iA}$ = $\frac{N_{alt}}{N_{total}}$ = 1/6 ;            $\hat{p}_{iB}$ = 4/6 ;             $\hat{p}_{iO}$ = 1/2</p>
+<p>   对于第二个位点，$\hat{p}_{iA}$ = 4/6;                          $\hat{p}_{iB}$ = 1/4;              $\hat{p}_{iO}$ = 1</p>
+<ol>
 <li><p>依据公式得到全基因组的$D_{stat}$</p>
 </li>
 <li><p>按照无重叠的滑窗方法计算每一个窗口的$D_{statw}$</p>
