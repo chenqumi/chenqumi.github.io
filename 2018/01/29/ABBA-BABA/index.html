@@ -10,16 +10,16 @@
 <h4 id="显著性检验："><a href="#显著性检验：" class="headerlink" title="显著性检验："></a>显著性检验：</h4><p>使用jackknife方法，所有文献都用的这个方法</p>
 <h3 id="程序实现"><a href="#程序实现" class="headerlink" title="程序实现"></a>程序实现</h3><ol>
 <li><p>针对每一位点，计算群体中alt的频率</p>
-<p>| CHROM | POS  |  A1  |  A2  |  A3  |  B1  |  B2  |  B3  |  O   |<br>| :—: | :–: | :–: | :–: | :–: | :–: | :–: | :–: | :–: |<br>| chr1  | 100  | 0/0  | 0/0  | 0/1  | 1/1  | 0/1  | 0/1  | 0/1  |<br>| chr1  | 218  | 1/1  | 0/1  | 0/1  | 0/0  | ./.  | 0/1  | 1/1  |</p>
+<p>| CHROM | POS  |  A1  |  A2  |  A3  |  B1  |  B2  |  B3  |  O   |<br>|:—:|:—:|:—:|:—:|:—:|:—:|:—:|:—:|:—:|<br>| chr1  | 100  | 0/0  | 0/0  | 0/1  | 1/1  | 0/1  | 0/1  | 0/1  |<br>| chr1  | 218  | 1/1  | 0/1  | 0/1  | 0/0  | ./.  | 0/1  | 1/1  |</p>
 <p>对于第一个位点，$\hat{p}_{iA}$ = $\frac{N_{alt}}{N_{total}}$ = 1/6 ;            $\hat{p}_{iB}$ = 4/6 ;             $\hat{p}_{iO}$ = 1/2</p>
 <p>对于第二个位点，$\hat{p}_{iA}$ = 4/6;                          $\hat{p}_{iB}$ = 1/4;              $\hat{p}_{iO}$ = 1</p>
 </li>
 <li><p>依据公式得到全基因组的$D_{stat}$</p>
 </li>
-<li><p>按照无重叠的滑窗方法计算每一个窗口的$D_{stat-w}$</p>
+<li><p>按照无重叠的滑窗方法计算每一个窗口的$D_{statw}$</p>
 </li>
 <li><p>使用jackknife做显著性检验<sup>[2]</sup>，具体是：</p>
-<p>a. 每次从得到的一组$D{stat-w}$中去掉一个，剩余的数据组成$D_{jack}$ ，每组$D_{jack}$可以得到一个伪值，最终可以得到一组伪值。$D_{pseudo} = D_{stat} \times N - \bar{D}_{jack} \times (N-1)$ ，其中N 为总的窗口数</p>
+<p>a. 每次从得到的一组$D{statw}$中去掉一个，剩余的数据组成$D_{jack}$ ，每组$D_{jack}$可以得到一个伪值，最终可以得到一组伪值。$D_{pseudo} = D_{stat} \times N - \bar{D}_{jack} \times (N-1)$ ，其中N 为总的窗口数</p>
 <p>b. 计算标准误、z值和p值。</p>
 <p>​     $D_{stat}$ ~ N(0,1)</p>
 <p>​     $std_err = \sqrt{\frac{var(D_{pseudo})}{N}}$</p>
