@@ -1,12 +1,12 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="这是一个很懒的人，但这个人也开始想做点什么了···"><title>D-statistic (ABBA-BABA test) 计算 | 大海</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">D-statistic (ABBA-BABA test) 计算</h1><a id="logo" href="/.">大海</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">D-statistic (ABBA-BABA test) 计算</h1><div class="post-meta">Jan 29, 2018<span> | </span><span class="category"><a href="/categories/Bioinfo/">Bioinfo</a></span></div><a class="disqus-comment-count" data-disqus-identifier="2018/01/29/ABBA-BABA/" href="/2018/01/29/ABBA-BABA/#disqus_thread"></a><div class="post-content"><h3 id="计算方法"><a href="#计算方法" class="headerlink" title="计算方法"></a>计算方法</h3><h4 id="D值计算："><a href="#D值计算：" class="headerlink" title="D值计算："></a>D值计算：</h4><p>$D(P_1,P_2,P_3,P_4) = \frac{\sum_{i=1}^{n}[(1-\hat{p}_{i1})\hat{p}_{i2}\hat{p}_{i3}(1-\hat{p}_{i4})-\hat{p}_{i1}(1-\hat{p}_{i2})\hat{p}_{i3}(1-\hat{p}_{i4})]}{\sum_{i=1}^{n}[(1-\hat{p}_{i1})\hat{p}_{i2}\hat{p}_{i3}(1-\hat{p}_{i4})+\hat{p}_{i1}(1-\hat{p}_{i2})\hat{p}_{i3}(1-\hat{p}_{i4})]}$</p>
-<p>P~1~ 和P~2~ : 待检验群体</p>
-<p>P~3~ : 基因交流可能的来源群体</p>
-<p>P~4~ : 外群</p>
+<p>$P_1$和$P_2$ : 待检验群体</p>
+<p>$P_3$ : 基因交流可能的来源群体</p>
+<p>$P_4$ : 外群</p>
 <p>i : SNP位点</p>
 <p>$\hat{p}_{i1}$ : 表示SNP i 在P1中的频率 </p>
 <p>​    # 可理解为在 i 位点处alt的频率，$(1-\hat{p}_{i1})$ 即ref的频率; </p>
-<p>​    # 在ABBA和BABA两种模式中，P~4~ 都是A，所以总是$(1-\hat{p}_{i4})$</p>
-<p>引自Durand^[1]^ </p>
+<p>​    # 在ABBA和BABA两种模式中，$P_4$ 都是A，所以总是$(1-\hat{p}_{i4})$</p>
+<p>引自Durand<sup>[1]</sup> </p>
 <h4 id="显著性检验："><a href="#显著性检验：" class="headerlink" title="显著性检验："></a>显著性检验：</h4><p>使用jackknife方法，所有文献都用的这个方法</p>
 <h3 id="程序实现"><a href="#程序实现" class="headerlink" title="程序实现"></a>程序实现</h3><ol>
 <li><p>针对每一位点，计算群体中alt的频率</p>
@@ -14,14 +14,14 @@
 <p>对于第一个位点，$\hat{p}_{iA}$ = $\frac{N_{alt}}{N_{total}}$ = 1/6 ;            $\hat{p}_{iB}$ = 4/6 ;             $\hat{p}_{iO}$ = 1/2</p>
 <p>对于第二个位点，$\hat{p}_{iA}$ = 4/6;                          $\hat{p}_{iB}$ = 1/4;              $\hat{p}_{iO}$ = 1</p>
 </li>
-<li><p>依据公式得到全基因组的D~stat~</p>
+<li><p>依据公式得到全基因组的$D_{stat}$</p>
 </li>
-<li><p>按照无重叠的滑窗方法计算每一个窗口的D~stat-w~</p>
+<li><p>按照无重叠的滑窗方法计算每一个窗口的$D_{stat-w}$</p>
 </li>
-<li><p>使用jackknife做显著性检验^[2]^，具体是：</p>
-<p>a. 每次从得到的一组D~stat-w~中去掉一个，剩余的数据组成D~jack~ ，每组D~jack~可以得到一个伪值，最终可以得到一组伪值。$D_{pseudo} = D_{stat} \times N - \bar{D}_{jack} \times (N-1)$ ，其中N 为总的窗口数</p>
+<li><p>使用jackknife做显著性检验<sup>[2]</sup>，具体是：</p>
+<p>a. 每次从得到的一组$D{stat-w}$中去掉一个，剩余的数据组成$D_{jack}$ ，每组$D_{jack}$可以得到一个伪值，最终可以得到一组伪值。$D_{pseudo} = D_{stat} \times N - \bar{D}_{jack} \times (N-1)$ ，其中N 为总的窗口数</p>
 <p>b. 计算标准误、z值和p值。</p>
-<p>​     D~stat~ ~ N(0,1)</p>
+<p>​     $D_{stat}$ ~ N(0,1)</p>
 <p>​     $std_err = \sqrt{\frac{var(D_{pseudo})}{N}}$</p>
 <p>​     $Z = \frac{D_{stat}}{std_err}$</p>
 <p>​</p>
